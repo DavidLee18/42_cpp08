@@ -61,8 +61,7 @@ public:
 };
 
 template <typename C>
-Maybe<typename C::value_type> easyfind(C &cont,
-                                       typename C::value_type const &val) {
+Maybe<typename C::value_type> easyfind(C &cont, int const &val) {
   for (typename C::iterator iter = cont.begin(); iter != cont.end(); ++iter) {
     typename std::iterator_traits<typename C::iterator>::reference ref = *iter;
     if (val == ref)
