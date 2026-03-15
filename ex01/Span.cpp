@@ -1,4 +1,5 @@
 #include "Span.h"
+#include <climits>
 #include <cstddef>
 #include <cstdlib>
 #include <stdexcept>
@@ -66,28 +67,12 @@ size_t Span::longestSpan() const throw(std::domain_error) {
 size_t Span::shortestSpan() const throw(std::domain_error) {
   if (len <= 1)
     throw std::domain_error("there could be no Span!");
-  int sum = 0;
-  for (size_t i = 1; i < len; i++) {
-    sum += ptr[i];
-  }
-  const int avg = sum / static_cast<int>(len);
-  int a = ptr[0];
-  size_t i = 0;
-  for (size_t j = 0; j < len; j++) {
-    if (std::abs(avg - a) > std::abs(ptr[j] - avg)) {
-      i = j;
-      a = ptr[j];
+  int res = INT_MAX;
+  for (size_t i = 0; i < len; i++) {
+    for (size_t j = 0; j < len; j++) {
+      if (i != j && std::abs(ptr[i] - ptr[j]) < res)
+        res = std::abs(ptr[i] - ptr[j]);
     }
   }
-  int b = i == 0 ? ptr[1] : ptr[0];
-  size_t k = i == 0 ? 1 : 0;
-  for (size_t j = 0; j < len; j++) {
-    if (j == i)
-      continue;
-    else if (std::abs(b - avg) > std::abs(ptr[j] - avg)) {
-      k = j;
-      b = ptr[k];
-    }
-  }
-  return static_cast<size_t>(std::abs(a - b));
+  return static_cast<size_t>(res);
 }
